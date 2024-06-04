@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Recibos</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+        {#  Script do temporizados do flash para as mensagens  #}
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+        {% block head %}
+        {% endblock %}
+
+    </head>
+    <body>
+
+        {% include 'navbar.html' %}
+
+        <div id="flash-messages">
+            {% with mensagens = get_flashed_messages(with_categories=True) %}
+                {% if mensagens %}
+                    {% for categoria, mensagem in mensagens %}
+                        <div class=" alert {{ categoria }} justify-content-center">
+                            {{ mensagem }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block table %}
+        {% endblock %}
+        <div id="container-body" class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+
+
+        {#    Script para desaparecer com as mensagens depois de x segundos #}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function () {
+                // Defina o tempo de exibição em milissegundos
+                let tempoExibicao = 5000;
+
+                // Esconda as mensagens de alerta após o tempo especificado
+                setTimeout(function () {
+                    $("#flash-messages").fadeOut("slow");
+                }, tempoExibicao);
+            });
+        </script>
+    </body>
+</html>

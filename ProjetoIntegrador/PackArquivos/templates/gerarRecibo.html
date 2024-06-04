@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div>
+        <h1 class="pt-3">Gerar recibo</h1>
+        <hr>
+        <div class="row d-flex justify-content-center">
+            <form method="POST" action="{{ url_for('gerarRecibo') }}" id="formularioRecibo" class="border m-5 p-5 w-75 p-3 shadow p-3 mb-5 bg-body rounded">
+                {{ formGerarRecibo.csrf_token }}
+                <div class="row">
+                    <div class="col-md-9">
+                        <legend class="fs-2">Recibo</legend>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                {{ formGerarRecibo.numero.label(class="form-control-label mt-1 fs-5") }}
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {% if formGerarRecibo.numero.errors %}
+                                        {{ formGerarRecibo.numero(class="form-control is-invalid") }}
+                                        {% for erro in formGerarRecibo.numero.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ formGerarRecibo.numero(class="form-control text-center") }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <fieldset>
+                    <div class="form-group row mt-3">
+                        <div class="col-sm-1 mt-2">
+                            {{ formGerarRecibo.empresa.label(class="form-control-label") }}
+                        </div>
+                        <div class="col-sm-11">
+                            {% if formGerarRecibo.empresa.errors %}
+                                {{ formGerarRecibo.empresa(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formGerarRecibo.empresa.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ formGerarRecibo.empresa(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-3">
+                        <div class="col-sm-1 mt-2">
+                            {{ formGerarRecibo.valor.label(class="form-control-label") }}
+                        </div>
+                        <div class="col-sm-2">
+                            {% if formGerarRecibo.valor.errors %}
+                                {{ formGerarRecibo.valor(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formGerarRecibo.valor.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ formGerarRecibo.valor(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="col-sm-2 mt-2">
+                            {{ formGerarRecibo.valorExtenso.label(class="form-control-label") }}
+                        </div>
+                        <div class="col-sm-7">
+                            {% if formGerarRecibo.valorExtenso.errors %}
+                                {{ formGerarRecibo.valorExtenso(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in formGerarRecibo.valorExtenso.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ formGerarRecibo.valorExtenso(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row mt-3">
+                        <div class="col-sm-1 mt-2">
+                            {{ formGerarRecibo.data.label(class="form-control-label") }}
+                        </div>
+                        <div class="col-sm-11">
+                            {% if formGerarRecibo.data.errors %}
+                                {{ formGerarRecibo.data(class="form-control is-invalid") }}
+                                {% for erro in formGerarRecibo.data.errors %}
+                                    {{ erro }}
+                                {% endfor %}
+                            {% else %}
+                                {{ formGerarRecibo.data(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-3">
+                        <div class="col-sm-1 mt-2">
+                            {{ formGerarRecibo.nome.label(class="form-control-label") }}
+                        </div>
+                        <div class="col-sm-6">
+                            {% if formGerarRecibo.nome.errors %}
+                                {{ formGerarRecibo.nome(class="form-control is-invalid") }}
+                                {% for erro in formGerarRecibo.nome.errors %}
+                                    {{ erro }}
+                                {% endfor %}
+                            {% else %}
+                                {{ formGerarRecibo.nome(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="col-sm-1 mt-2">
+                            {{ formGerarRecibo.cpf.label(class="form-control-label") }}
+                        </div>
+                        <div class="col-sm-4">
+                            {% if formGerarRecibo.cpf.errors %}
+                                {{ formGerarRecibo.cpf(class="form-control is-invalid") }}
+                                {% for erro in formGerarRecibo.cpf.errors %}
+                                    {{ erro }}
+                                {% endfor %}
+                            {% else %}
+                                {{ formGerarRecibo.cpf(class="form-control") }}
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <div class="text-center mb-1">
+                            {{ formGerarRecibo.descricao.label(class="form-control-label text-center") }}
+                        </div>
+                        {% if formGerarRecibo.descricao.errors %}
+                            {{ formGerarRecibo.descricao(class="form-control is-invalid") }}
+                            {% for erro in formGerarRecibo.descricao.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                        {% else %}
+                            {{ formGerarRecibo.descricao(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+
+                <div class="text-center m-3">
+                    {{ formGerarRecibo.submitRecibo(class="btn btn-outline-primary mb-3 mx-4") }}
+                    <button class="btn btn-outline-secondary mb-3" id="clearRecibo">Limpar Formulário</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='gerarRecibo.js') }}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#valor').on('input', function() {
+                let valor = $(this).val();
+                $.ajax({
+                    url: '/valor_extenso',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({valor: valor}),
+                    success: function(response) {
+                        $('#valorExtenso').val(response.valorExtenso);
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

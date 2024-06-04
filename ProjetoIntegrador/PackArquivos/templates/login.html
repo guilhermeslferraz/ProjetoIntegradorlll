@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div>
+    <h1 class="pt-3">Faça login para continuar</h1>
+    <hr>
+        <div class="row d-flex justify-content-center">
+            <form method="POST" action="" class="border m-5 p-5 w-50 p-3 shadow p-3 mb-5 bg-body rounded">
+                {{ formLogin.csrf_token }}
+                <legend class=text-center>Login</legend>
+                <fieldset>
+                    <div class="form-group">
+                        {{ formLogin.email.label(class="form-control-label") }}
+
+                        {% if formLogin.email.errors %}
+                            {{ formLogin.email(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in formLogin.email.errors %}
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ formLogin.email(class="form-control") }}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="form-group">
+                        {{ formLogin.senha.label(class="form-control-label") }}
+
+                        {% if formLogin.senha.errors %}
+                            {{ formLogin.senha(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                            {% for erro in formLogin.senha.errors %}
+                                {{ erro }}
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ formLogin.senha(class="form-control") }}
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="form-group centralizar m-4">
+                        {{formLogin.lembrar_dados(class="form-check-input") }}
+                        {{formLogin.lembrar_dados.label(class="form-check-label") }}
+                    </div>
+                </fieldset>
+                <div class="form-group text-center mt-1">
+                    {{ formLogin.submitLogin(class="btn btn-outline-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
