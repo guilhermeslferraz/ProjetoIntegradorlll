@@ -158,7 +158,7 @@ def upload_assinatura():
         criar_recibo_pdf(filename=path, dadosPDF=dadosPDF)
 
         # Gerar a URL para acessar o PDF
-        pdf_url = url_for('static', filename=f'arquivosPDF/{filename}')
+        pdfGerado = criar_recibo_pdf(filename=path, dadosPDF=dadosPDF)
 
         # Retornar o caminho do arquivo PDF gerado
         return jsonify(success=True, pdf_path=pdf_url)
