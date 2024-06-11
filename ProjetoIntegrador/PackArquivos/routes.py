@@ -13,6 +13,9 @@ from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.units import inch
 from random import randint
 from num2words import num2words
+from PackArquivos.s3_utils import S3_BUCKET, S3_REGION, upload_to_s3;
+
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -158,10 +161,20 @@ def upload_assinatura():
         criar_recibo_pdf(filename=path, dadosPDF=dadosPDF)
 
         # Gerar a URL para acessar o PDF
+<<<<<<< Updated upstream
         pdfGerado = criar_recibo_pdf(filename=path, dadosPDF=dadosPDF)
 
         # Retornar o caminho do arquivo PDF gerado
         return jsonify(success=True, pdf_path=pdf_url)
+=======
+        try:
+            with open(path, 'rb') as f:
+                upload_to_s3(f, filename)
+            pdf_url = f"https://{S3_BUCKET}.s3.{S3_REGION}.amazonaws.com/{filename}"
+            return jsonify(success=True, pdf_path=pdf_url)
+        except Exception as e:
+            return jsonify(success=False, error=str(e))
+>>>>>>> Stashed changes
 
     return jsonify(success=False, error='Dados do formulário não encontrados')
 
