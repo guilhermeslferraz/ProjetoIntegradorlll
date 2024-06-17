@@ -87,7 +87,9 @@ def valor_extenso():
     data = request.json
     valor = data.get('valor', '0')
     valor = valor.replace("R$ ", "")
-    return jsonify({'valorExtenso': "R$ " + num2words(valor, lang='pt_BR') + " reais"})
+    if int(valor) <= 1 :
+        return jsonify({'valorExtenso': num2words(valor, lang='pt_BR') + " real"})
+    return jsonify({'valorExtenso': num2words(valor, lang='pt_BR') + " reais"})
 
 
 @app.route('/salvarAssinatura', methods=['GET', 'POST'])
@@ -159,14 +161,7 @@ def upload_assinatura():
 
         # Chamar a função criar_recibo_pdf para gerar o PDF
         criar_recibo_pdf(filename=path, dadosPDF=dadosPDF)
-
         # Gerar a URL para acessar o PDF
-<<<<<<< Updated upstream
-        pdfGerado = criar_recibo_pdf(filename=path, dadosPDF=dadosPDF)
-
-        # Retornar o caminho do arquivo PDF gerado
-        return jsonify(success=True, pdf_path=pdf_url)
-=======
         try:
             with open(path, 'rb') as f:
                 upload_to_s3(f, filename)
@@ -174,9 +169,6 @@ def upload_assinatura():
             return jsonify(success=True, pdf_path=pdf_url)
         except Exception as e:
             return jsonify(success=False, error=str(e))
->>>>>>> Stashed changes
-
-    return jsonify(success=False, error='Dados do formulário não encontrados')
 
 
 def criar_recibo_pdf(filename, dadosPDF):
